@@ -59,7 +59,10 @@ jobs:
         mkdir -p data/audio data/transcripts data/summaries data/embeddings logs
         
     - name: Run podcast processing pipeline
-      run: python github_actions_runner.py
+      run: |
+        python -c "import sys; print('Python path:', sys.path)"
+        python -c "import src; print('src module imported successfully')"
+        python github_actions_runner.py
       env:
         SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
         SMTP_PORT: ${{ secrets.SMTP_PORT }}

@@ -17,13 +17,13 @@ pydub==0.25.1
 torch==2.1.1
 torchaudio==2.1.1
 
-# AI/ML dependencies (for later phases)
-# transformers==4.36.2
-# sentence-transformers==2.2.2
-# faiss-cpu==1.7.4
-# chromadb==0.4.18
-# llama-cpp-python==0.2.11
-# ollama==0.1.7
+# AI/ML dependencies
+transformers==4.36.2
+sentence-transformers==2.2.2
+faiss-cpu==1.7.4
+chromadb==0.4.18
+llama-cpp-python==0.2.11
+ollama==0.1.7
 
 # Web and delivery (for later phases)
 # fastapi==0.104.1
