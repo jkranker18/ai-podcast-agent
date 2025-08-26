@@ -35,31 +35,32 @@ async def main():
         
         # Fetch new episodes
         print("📡 Fetching new episodes...")
-        fetcher = RSSFetcher()
+        from src.core.config import settings
+        fetcher = RSSFetcher(settings)
         await fetcher.fetch_podcast_feeds()
         print("✅ Episodes fetched")
         
         # Download audio files
         print("⬇️ Downloading audio files...")
-        downloader = AudioDownloader()
+        downloader = AudioDownloader(settings)
         await downloader.download_pending_episodes()
         print("✅ Audio files downloaded")
         
         # Transcribe episodes
         print("🎤 Transcribing episodes...")
-        transcription_worker = TranscriptionWorker()
+        transcription_worker = TranscriptionWorker(settings)
         await transcription_worker.process_pending_episodes()
         print("✅ Episodes transcribed")
         
         # Generate summaries
         print("🧠 Generating summaries...")
-        summarization_worker = SummarizationWorker()
+        summarization_worker = SummarizationWorker(settings)
         await summarization_worker.process_pending_episodes()
         print("✅ Summaries generated")
         
         # Send email digest
         print("📧 Sending email digest...")
-        composer = DigestComposer()
+        composer = DigestComposer(settings)
         await composer.send_daily_digest()
         print("✅ Email digest sent")
         
