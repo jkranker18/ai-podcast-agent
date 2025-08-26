@@ -18,11 +18,11 @@ torch==2.8.0
 torchaudio==2.8.0
 
 # AI/ML dependencies
-transformers==4.36.2
-sentence-transformers==2.2.2
-faiss-cpu==1.7.4
-chromadb==0.4.18
-llama-cpp-python==0.2.11
+# transformers==4.36.2  # Commented out - not needed for basic functionality
+# sentence-transformers==2.2.2  # Commented out - not needed for basic functionality
+# faiss-cpu==1.7.4  # Commented out - causes build issues in GitHub Actions
+# chromadb==0.4.18  # Commented out - not needed for basic functionality
+# llama-cpp-python==0.2.11  # Commented out - not needed for basic functionality
 ollama==0.1.7
 
 # Web and delivery (for later phases)
