@@ -1,0 +1,29 @@
+name: Basic Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  basic-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Echo test
+      run: |
+        echo "Hello from GitHub Actions!"
+        echo "Current directory: $(pwd)"
+        echo "Files in directory:"
+        ls -la
+        
+    - name: Python test
+      run: |
+        python --version
+        echo "Python is working!"
+        
+    - name: Create test file
+      run: |
+        echo "This is a test file" > test.txt
+        cat test.txt 
