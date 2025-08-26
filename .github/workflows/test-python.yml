@@ -16,6 +16,17 @@ jobs:
       with:
         python-version: '3.12'
         
+    - name: Check requirements file
+      run: |
+        echo "Checking requirements.txt..."
+        if [ -f requirements.txt ]; then
+          echo "✅ requirements.txt exists"
+          cat requirements.txt
+        else
+          echo "❌ requirements.txt does not exist"
+          ls -la *.txt
+        fi
+        
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
@@ -34,6 +45,10 @@ jobs:
         python --version
         echo "Pip list:"
         pip list
+        
+    - name: Minimal Python test
+      run: |
+        python minimal_test.py
         
     - name: Simple Python test
       run: |
