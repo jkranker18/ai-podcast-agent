@@ -30,7 +30,7 @@ jobs:
         sudo systemctl start ollama
         
     - name: Cache Ollama models
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.ollama
         key: ollama-models-${{ runner.os }}
@@ -42,7 +42,7 @@ jobs:
         ollama pull llama3.1:8b
         
     - name: Cache Python dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -72,7 +72,7 @@ jobs:
         EMAIL_ENABLED: true
         
     - name: Upload logs as artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: processing-logs
