@@ -58,6 +58,20 @@ jobs:
       run: |
         mkdir -p data/audio data/transcripts data/summaries data/embeddings logs
         
+    - name: Debug environment
+      run: |
+        echo "Current directory: $(pwd)"
+        echo "Files in directory:"
+        ls -la
+        echo "Python version:"
+        python --version
+        echo "Pip list:"
+        pip list
+        
+    - name: Simple Python test
+      run: |
+        python simple_test.py
+        
     - name: Test basic functionality
       run: |
         python test_github_actions.py
