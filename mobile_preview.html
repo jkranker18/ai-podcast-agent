@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Preview - AI Podcast Digest</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .mobile-frame {
+            width: 375px;
+            height: 667px;
+            background: white;
+            margin: 20px auto;
+            border: 2px solid #333;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .mobile-frame iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .preview-label {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-label">📱 Mobile Preview (iPhone 375px width)</div>
+    <div class="mobile-frame">
+        <iframe src="email_preview.html"></iframe>
+    </div>
+    <div style="text-align: center; margin: 20px; color: #666;">
+        <p>💡 <strong>Mobile Improvements Made:</strong></p>
+        <ul style="text-align: left; display: inline-block;">
+            <li>✅ Darker text colors for better contrast</li>
+            <li>✅ Larger font sizes on mobile</li>
+            <li>✅ Improved line spacing</li>
+            <li>✅ Better padding and margins</li>
+            <li>✅ Prevents iOS zoom with 16px base font</li>
+        </ul>
+    </div>
+</body>
+</html> 

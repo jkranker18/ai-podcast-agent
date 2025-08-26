@@ -1,0 +1,61 @@
+# Environment variables and secrets
+.env
+*.env
+
+# Database files
+data/db.sqlite
+data/db.sqlite-journal
+
+# Audio files (too large for GitHub)
+data/audio/
+data/transcripts/
+data/summaries/
+data/embeddings/
+
+# Logs
+logs/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Ollama models (will be cached in GitHub Actions)
+models/
+
+# Temporary files
+*.tmp
+*.temp 
