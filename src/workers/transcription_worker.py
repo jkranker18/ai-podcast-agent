@@ -186,11 +186,11 @@ class TranscriptionWorker:
         logger.info("Starting transcription of pending episodes...")
         
         with get_db_session() as db:
-            # Get episodes that need transcription
+            # Get episodes that need transcription (limit to 3 to avoid timeout)
             episodes = db.query(Episode).filter(
                 Episode.audio_file_path.isnot(None),
                 Episode.transcript_file_path.is_(None)
-            ).all()
+            ).limit(3).all()
             
             if not episodes:
                 logger.info("No episodes need transcription")
