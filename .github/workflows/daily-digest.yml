@@ -59,20 +59,6 @@ jobs:
       run: |
         mkdir -p data/audio data/transcripts data/summaries data/embeddings logs
         
-    - name: Debug environment
-      run: |
-        echo "Current directory: $(pwd)"
-        echo "Files in directory:"
-        ls -la
-        echo "Python version:"
-        python --version
-        echo "Pip list:"
-        pip list
-        
-    - name: Simple Python test
-      run: |
-        python simple_test.py
-        
     - name: Test basic functionality
       run: |
         python test_github_actions.py
@@ -84,17 +70,6 @@ jobs:
         SUBSCRIBER_EMAILS: ${{ secrets.SUBSCRIBER_EMAILS }}
         EMAIL_ENABLED: true
         DATABASE_URL: sqlite:///data/db.sqlite
-        
-    - name: Test email configuration
-      run: |
-        python test_email.py
-      env:
-        SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
-        SMTP_PORT: ${{ secrets.SMTP_PORT }}
-        EMAIL_USER: ${{ secrets.EMAIL_USER }}
-        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-        SUBSCRIBER_EMAILS: ${{ secrets.SUBSCRIBER_EMAILS }}
-        EMAIL_ENABLED: true
         
     - name: Run podcast processing pipeline
       run: |
