@@ -85,6 +85,17 @@ jobs:
         EMAIL_ENABLED: true
         DATABASE_URL: sqlite:///data/db.sqlite
         
+    - name: Test email configuration
+      run: |
+        python test_email.py
+      env:
+        SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+        SMTP_PORT: ${{ secrets.SMTP_PORT }}
+        EMAIL_USER: ${{ secrets.EMAIL_USER }}
+        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+        SUBSCRIBER_EMAILS: ${{ secrets.SUBSCRIBER_EMAILS }}
+        EMAIL_ENABLED: true
+        
     - name: Run podcast processing pipeline
       run: |
         python github_actions_runner.py

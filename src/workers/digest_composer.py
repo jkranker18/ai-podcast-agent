@@ -290,6 +290,60 @@ This digest contains AI-generated summaries. Please verify important information
         
         return subscribers
     
+    def _send_digest_content(self, html_content: str, text_content: str, date: datetime) -> bool:
+        """Send email digest with pre-created content."""
+        if not self.config.email_enabled:
+            logger.warning("Email is disabled in configuration")
+            return False
+        
+        # Get list of subscribers
+        subscribers = self._get_subscriber_list()
+        if not subscribers:
+            logger.warning("No email subscribers configured")
+            return False
+        
+        try:
+            # Send to each subscriber
+            success_count = 0
+            for subscriber in subscribers:
+                try:
+                    # Create email message for this subscriber
+                    msg = MIMEMultipart('alternative')
+                    msg['Subject'] = f"AI Podcast Digest - {date.strftime('%B %d, %Y')}"
+                    msg['From'] = self.config.email_user
+                    msg['To'] = subscriber
+                    
+                    # Attach both HTML and text versions
+                    text_part = MIMEText(text_content, 'plain')
+                    html_part = MIMEText(html_content, 'html')
+                    
+                    msg.attach(text_part)
+                    msg.attach(html_part)
+                    
+                    # Send email
+                    with smtplib.SMTP(self.config.smtp_server, self.config.smtp_port) as server:
+                        server.starttls()
+                        server.login(self.config.email_user, self.config.email_password)
+                        server.send_message(msg)
+                    
+                    logger.info(f"Digest sent successfully to {subscriber}")
+                    success_count += 1
+                    
+                except Exception as e:
+                    logger.error(f"Error sending digest to {subscriber}: {e}")
+                    continue
+            
+            if success_count > 0:
+                logger.info(f"Digest sent to {success_count}/{len(subscribers)} subscribers")
+                return True
+            else:
+                logger.error("Failed to send digest to any subscribers")
+                return False
+            
+        except Exception as e:
+            logger.error(f"Error in send_digest: {e}")
+            return False
+    
     def send_digest(self, episodes: List[Episode], date: datetime = None) -> bool:
         """Send email digest to all subscribers."""
         if not self.config.email_enabled:
@@ -360,15 +414,31 @@ This digest contains AI-generated summaries. Please verify important information
         logger.info("Composing and sending daily digest...")
         
         try:
-            # Get episodes from the last day
-            episodes = self.get_recent_episodes(days=1)
+            # Get episodes and create digest within a single session
+            with get_db_session() as session:
+                cutoff_date = datetime.utcnow() - timedelta(days=1)
+                
+                episodes = session.query(Episode).join(Podcast).filter(
+                    Episode.summary_file_path.isnot(None),
+                    Episode.published_date >= cutoff_date
+                ).order_by(Episode.published_date.desc()).all()
+                
+                if not episodes:
+                    logger.info("No recent episodes found for daily digest")
+                    return True  # Not an error, just no content
+                
+                # Ensure episodes are loaded within the session
+                for episode in episodes:
+                    session.refresh(episode)
+                    session.refresh(episode.podcast)
+                
+                # Create digest content within session context
+                date = datetime.utcnow()
+                html_content = self._create_digest_html(episodes, date)
+                text_content = self._create_digest_text(episodes, date)
             
-            if not episodes:
-                logger.info("No recent episodes found for daily digest")
-                return True  # Not an error, just no content
-            
-            # Send digest
-            success = self.send_digest(episodes)
+            # Send digest (episodes are no longer needed after content creation)
+            success = self._send_digest_content(html_content, text_content, date)
             
             if success:
                 logger.info(f"Daily digest sent with {len(episodes)} episodes")
