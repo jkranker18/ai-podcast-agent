@@ -67,8 +67,8 @@ class RSSFetcher:
             
             episodes = []
             
-            # Only process the last 3 episodes to stay within GitHub Actions time limits
-            recent_entries = feed.entries[:3]
+            # Only process the last 1 episode to stay within GitHub Actions time limits
+            recent_entries = feed.entries[:1]
             
             for entry in recent_entries:
                 try:
