@@ -261,10 +261,15 @@ This digest contains AI-generated summaries. Please verify important information
         with get_db_session() as session:
             cutoff_date = datetime.utcnow() - timedelta(days=days)
             
-            episodes = session.query(Episode).filter(
+            episodes = session.query(Episode).join(Podcast).filter(
                 Episode.summary_file_path.isnot(None),
                 Episode.published_date >= cutoff_date
             ).order_by(Episode.published_date.desc()).all()
+            
+            # Ensure episodes are loaded within the session
+            for episode in episodes:
+                session.refresh(episode)
+                session.refresh(episode.podcast)
             
             return episodes
     
@@ -350,23 +355,28 @@ This digest contains AI-generated summaries. Please verify important information
             logger.error(f"Error in send_digest: {e}")
             return False
     
-    def send_daily_digest(self) -> bool:
+    async def send_daily_digest(self) -> bool:
         """Send daily digest with recent episodes."""
         logger.info("Composing and sending daily digest...")
         
-        # Get episodes from the last day
-        episodes = self.get_recent_episodes(days=1)
-        
-        if not episodes:
-            logger.info("No recent episodes found for daily digest")
-            return True  # Not an error, just no content
-        
-        # Send digest
-        success = self.send_digest(episodes)
-        
-        if success:
-            logger.info(f"Daily digest sent with {len(episodes)} episodes")
-        else:
-            logger.error("Failed to send daily digest")
-        
-        return success 
+        try:
+            # Get episodes from the last day
+            episodes = self.get_recent_episodes(days=1)
+            
+            if not episodes:
+                logger.info("No recent episodes found for daily digest")
+                return True  # Not an error, just no content
+            
+            # Send digest
+            success = self.send_digest(episodes)
+            
+            if success:
+                logger.info(f"Daily digest sent with {len(episodes)} episodes")
+            else:
+                logger.error("Failed to send daily digest")
+            
+            return success
+            
+        except Exception as e:
+            logger.error(f"Failed to send daily digest: {e}")
+            return False 
