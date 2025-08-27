@@ -33,9 +33,21 @@ async def main():
         init_database()
         print("✅ Database initialized")
         
+        # Import settings after environment variables are set
+        from src.core.config import Settings
+        settings = Settings()
+        
+        # Debug email configuration
+        print(f"📧 Email Configuration:")
+        print(f"   Email enabled: {settings.email_enabled}")
+        print(f"   SMTP server: {settings.smtp_server}")
+        print(f"   SMTP port: {settings.smtp_port}")
+        print(f"   Email user: {settings.email_user}")
+        print(f"   Subscriber emails: {settings.subscriber_emails}")
+        print(f"   Email password set: {'Yes' if settings.email_password else 'No'}")
+        
         # Fetch new episodes
         print("📡 Fetching new episodes...")
-        from src.core.config import settings
         fetcher = RSSFetcher(settings)
         await fetcher.fetch_podcast_feeds()
         print("✅ Episodes fetched")
