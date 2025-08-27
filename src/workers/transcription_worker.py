@@ -93,7 +93,17 @@ class TranscriptionWorker:
             
         except Exception as e:
             logger.error(f"Error transcribing {audio_path}: {e}")
-            raise
+            # Return a minimal transcript instead of raising
+            logger.warning(f"Skipping transcription for {audio_path} due to error")
+            return {
+                "language": "en",
+                "language_probability": 0.0,
+                "duration": 0.0,
+                "segments": [],
+                "full_transcript": f"[Transcription failed: {str(e)}]",
+                "word_count": 0,
+                "audio_path": audio_path
+            }
     
     def save_transcript(self, episode_id: int, transcript_data: dict) -> str:
         """Save transcript to file and return the file path."""

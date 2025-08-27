@@ -30,7 +30,7 @@ class Settings(BaseSettings):
     
     # AI Model settings
     local_llm_model: str = "llama3.1:8b"  # Ollama model name
-    whisper_model: str = "base"  # Whisper model size: tiny, base, small, medium, large
+    whisper_model: str = "tiny"  # Whisper model size: tiny, base, small, medium, large
     embedding_model: str = "all-MiniLM-L6-v2"  # Sentence transformers model
     
     # OpenAI settings (for fallback)
