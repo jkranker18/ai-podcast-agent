@@ -420,8 +420,10 @@ This digest contains AI-generated summaries. Please verify important information
                 
                 episodes = session.query(Episode).join(Podcast).filter(
                     Episode.summary_file_path.isnot(None),
-                    Episode.published_date >= cutoff_date
-                ).order_by(Episode.published_date.desc()).all()
+                    Episode.summarization_completed_at >= cutoff_date
+                ).order_by(Episode.summarization_completed_at.desc()).all()
+                
+                logger.info(f"Found {len(episodes)} episodes processed in the last 24 hours (since {cutoff_date})")
                 
                 if not episodes:
                     logger.info("No recent episodes found for daily digest")
