@@ -1,169 +1,33 @@
 # AI Podcast Agent
 
-An intelligent podcast listener that automatically ingests AI/tech podcast episodes, generates summaries, and delivers daily digests via email and Slack.
+Automatically ingests new podcast episodes from curated AI/tech shows, generates high-quality summaries and highlights, and delivers a daily digest via Email and Slack.
 
 ## Features
 
-- **Automated RSS ingestion** from curated AI/tech podcasts
-- **Local-first processing** using open-source models
-- **High-quality summaries** generated with local LLMs
-- **Daily digest delivery** via email and Slack
-- **Interactive chat agent** for Q&A over podcast content
-- **Modular architecture** for easy extension
+- **RSS Feed Monitoring**: Automatically checks for new episodes from AI/tech podcasts
+- **Audio Processing**: Downloads and transcribes audio files using Whisper
+- **AI Summarization**: Generates executive summaries using local Llama 3.1 model
+- **Daily Digest**: Sends formatted email summaries to subscribers
+- **Local-First**: Runs entirely on your local machine or GitHub Actions
 
-## Supported Podcasts
+## Current Status
 
-1. AI Today Podcast
-2. CEO AI Podcast  
-3. Latent Space
-4. Practical AI
-5. The Cognitive Revolution
+**Last updated**: 2025-08-29 - System operational and running daily at 6:00 AM Eastern
 
-## Quick Start
+## Podcasts Monitored
 
-### Prerequisites
+- AI Today Podcast
+- The TWIML AI Podcast  
+- Practical AI
+- Lex Fridman Podcast
 
-- Python 3.9+
-- FFmpeg (for audio processing)
-- Optional: NVIDIA GPU with CUDA for faster processing
+## Setup
 
-### Installation
+1. Clone this repository
+2. Install dependencies: `pip install -r requirements.txt`
+3. Configure environment variables in `.env`
+4. Run: `python run_scheduler.py`
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd podcastai
-```
+## GitHub Actions
 
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-3. Set up environment variables:
-```bash
-cp .env.example .env
-# Edit .env with your configuration
-```
-
-4. Initialize the database:
-```bash
-python -m src.database.init_db
-```
-
-5. Start the system:
-```bash
-python -m src.main
-```
-
-## Configuration
-
-Create a `.env` file with the following variables:
-
-```env
-# Database
-DATABASE_URL=sqlite:///data/db.sqlite
-
-# Email settings
-SMTP_SERVER=smtp.gmail.com
-SMTP_PORT=587
-EMAIL_USER=your-email@gmail.com
-EMAIL_PASSWORD=your-app-password
-RECIPIENT_EMAIL=digest@example.com
-
-# Slack settings
-SLACK_BOT_TOKEN=xoxb-your-bot-token
-SLACK_CHANNEL=#podcast-digest
-
-# AI Models
-LOCAL_LLM_MODEL=llama3.1:8b
-WHISPER_MODEL=medium
-EMBEDDING_MODEL=all-MiniLM-L6-v2
-
-# Storage paths
-AUDIO_STORAGE_PATH=./data/audio
-TRANSCRIPT_STORAGE_PATH=./data/transcripts
-SUMMARY_STORAGE_PATH=./data/summaries
-```
-
-## Architecture
-
-```
-Scheduler ─┬─► Feed Fetcher ─► Episode Registry
-           ├─► Download Worker ─► Audio Store  
-           ├─► ASR Worker ─► Transcript Store
-           ├─► Summarizer Worker ─► Summaries
-           └─► Digest Composer ─► Email + Slack
-                                    │
-                                    └─► Chat Agent (RAG)
-```
-
-## Usage
-
-### Daily Digest
-
-The system automatically:
-1. Checks for new podcast episodes
-2. Downloads and transcribes audio
-3. Generates summaries and highlights
-4. Sends daily digest via email and Slack
-
-### Chat Agent
-
-Access the interactive Q&A system:
-
-```bash
-python -m src.chat.agent
-```
-
-Ask questions about podcast content, get insights, and explore topics discussed in episodes.
-
-## Development
-
-### Project Structure
-
-```
-src/
-├── core/           # Core functionality
-├── database/       # Database models and operations
-├── fetchers/       # RSS and audio fetchers
-├── processors/     # ASR, summarization, embeddings
-├── delivery/       # Email and Slack delivery
-├── chat/          # RAG-based chat agent
-└── main.py        # Application entry point
-
-data/
-├── audio/         # Downloaded audio files
-├── transcripts/   # Generated transcripts
-├── summaries/     # Episode summaries
-└── db.sqlite      # SQLite database
-```
-
-### Running Tests
-
-```bash
-pytest tests/
-```
-
-### Code Formatting
-
-```bash
-black src/
-flake8 src/
-```
-
-## Legal Notice
-
-This tool is for personal use only. Please respect each podcast's Terms of Service and copyright. Do not redistribute transcripts or content without permission.
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
-
-## License
-
-MIT License - see LICENSE file for details. 
+The system runs automatically via GitHub Actions every day at 6:00 AM Eastern (11:00 AM UTC). 
