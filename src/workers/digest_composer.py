@@ -416,7 +416,7 @@ This digest contains AI-generated summaries. Please verify important information
         try:
             # Get episodes and create digest within a single session
             with get_db_session() as session:
-                cutoff_date = datetime.utcnow() - timedelta(days=1)
+                cutoff_date = datetime.utcnow() - timedelta(hours=25)
                 
                 episodes = session.query(Episode).join(Podcast).filter(
                     Episode.summary_file_path.isnot(None),
