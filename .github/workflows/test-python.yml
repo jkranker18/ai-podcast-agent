@@ -16,21 +16,28 @@ jobs:
       with:
         python-version: '3.12'
         
-    - name: Check requirements file
+    - name: Check requirements files
       run: |
-        echo "Checking requirements.txt..."
+        echo 'Checking requirements files...'
         if [ -f requirements.txt ]; then
-          echo "✅ requirements.txt exists"
-          cat requirements.txt
+          echo ' requirements.txt exists'
         else
-          echo "❌ requirements.txt does not exist"
-          ls -la *.txt
+          echo ' requirements.txt does not exist'
+        fi
+        if [ -f requirements-ci.txt ]; then
+          echo ' requirements-ci.txt exists'
+          cat requirements-ci.txt
+        else
+          echo ' requirements-ci.txt does not exist'
         fi
         
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        # Install CPU-only PyTorch to save disk space (much smaller than CUDA version)
+        pip install torch==2.8.0+cpu torchaudio==2.8.0+cpu --index-url https://download.pytorch.org/whl/cpu
+        # Install other dependencies
+        pip install -r requirements-ci.txt
         
     - name: Create necessary directories
       run: |
@@ -38,12 +45,12 @@ jobs:
         
     - name: Debug environment
       run: |
-        echo "Current directory: $(pwd)"
-        echo "Files in directory:"
+        echo 'Current directory: $(pwd)'
+        echo 'Files in directory:'
         ls -la
-        echo "Python version:"
+        echo 'Python version:'
         python --version
-        echo "Pip list:"
+        echo 'Pip list:'
         pip list
         
     - name: Minimal Python test
@@ -64,4 +71,4 @@ jobs:
         EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         SUBSCRIBER_EMAILS: ${{ secrets.SUBSCRIBER_EMAILS }}
         EMAIL_ENABLED: true
-        DATABASE_URL: sqlite:///data/db.sqlite 
+        DATABASE_URL: sqlite:///data/db.sqlite
