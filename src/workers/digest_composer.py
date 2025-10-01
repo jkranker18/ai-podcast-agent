@@ -416,14 +416,14 @@ This digest contains AI-generated summaries. Please verify important information
         try:
             # Get episodes and create digest within a single session
             with get_db_session() as session:
-                cutoff_date = datetime.utcnow() - timedelta(hours=26)
+                cutoff_date = datetime.utcnow() - timedelta(hours=48)
                 
                 episodes = session.query(Episode).join(Podcast).filter(
                     Episode.summary_file_path.isnot(None),
                     Episode.summarization_completed_at >= cutoff_date
                 ).order_by(Episode.summarization_completed_at.desc()).all()
                 
-                logger.info(f"Found {len(episodes)} episodes processed in the last 24 hours (since {cutoff_date})")
+                logger.info(f"Found {len(episodes)} episodes processed in the last 48 hours (since {cutoff_date})")
                 
                 if not episodes:
                     logger.info("No recent episodes found for daily digest")
